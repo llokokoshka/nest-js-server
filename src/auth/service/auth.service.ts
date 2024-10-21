@@ -1,25 +1,76 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../users/service/users.service';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UsersUtils } from 'src/users/utils/users.utils';
+import {
+  generatePassword,
+  validPassword,
+} from '../utils/auth.utils';
+import { User } from 'src/db/entity/users.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from 'src/users/dto/createUsers.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private usersUtils: UsersUtils,
     private jwtService: JwtService,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
-  async signIn(
-    username: string,
-    pass: string,
-  ): Promise<{ access_token: string }> {
-    const user = await this.usersService.findOne(username);
-    if (user?.password !== pass) {
-      throw new UnauthorizedException();
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ user: Object; token: string }> {
+    const user = await this.usersUtils.findUser(email);
+    if (!user) {
+      throw new HttpException(
+        'user not found',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
     }
-    const payload = { sub: user.userId, username: user.username };
+
+    const [salt, userHashPassword] = user.password.split('//');
+    const isPasswordValid = validPassword(password, userHashPassword, salt);
+
+    if (isPasswordValid == false) {
+      throw new HttpException('Wrong password', HttpStatus.UNAUTHORIZED);
+    }
+
+    const payload = { sub: user.id, username: user.fullName };
+    const visibleParamsOfUser = {
+      name: user.fullName,
+      email: user.email,
+      dateOfBirth: user.Dob
+    }
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      user: visibleParamsOfUser,
+      token: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async registration(
+    user: CreateUserDto,
+  ): Promise<{ user: User; token: string }> {
+    const hashPass = generatePassword(user.password);
+    user.password = hashPass.salt + '//' + hashPass.hash;
+    const addedUserInDb = await this.usersRepository.save(user);
+    if (!addedUserInDb){
+      throw new HttpException(
+        'user not addited',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+    const payload = { sub: addedUserInDb.id, username: addedUserInDb.fullName };
+    console.log('user are addited');
+    return {
+      user: addedUserInDb,
+      token: await this.jwtService.signAsync(payload),
     };
   }
 }

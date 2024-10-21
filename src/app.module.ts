@@ -4,27 +4,25 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/module/auth.module';
 import { UsersModule } from './users/module/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './http-exception.filter';
 import { UsersController } from './users/controllers/users.controller';
-import  * as dotenv from "dotenv";
-dotenv.config();
-
-
+import { ConfigModule } from '@nestjs/config';
+import ormconfig from './ormconfig';
 @Module({
-  imports: [AuthModule, UsersModule,
-    TypeOrmModule.forRoot({
-      type: "postgres",
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      synchronize: false,
-      logging: false,
-      entities: [`${__dirname}/users/users.entity.ts`],
-      migrations: [`${__dirname}/migrations/*.{ts,js}`],
-    }),
+  imports: [
+    TypeOrmModule.forRoot(ormconfig),
+    AuthModule,
+    UsersModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController, UsersController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

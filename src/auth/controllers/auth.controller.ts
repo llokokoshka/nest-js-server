@@ -1,30 +1,24 @@
 import {
-    Body,
-    Controller,
-    Get,
-    HttpCode,
-    HttpStatus,
-    Post,
-    Request,
-    UseGuards
-  } from '@nestjs/common';
-  import { AuthGuard } from '../guards/auth.guard';
-  import { AuthService } from '../service/auth.service';
-  
-  @Controller('auth')
-  export class AuthController {
-    constructor(private authService: AuthService) {}
-  
-    @HttpCode(HttpStatus.OK)
-    @Post('login')
-    signIn(@Body() signInDto: Record<string, any>) {
-      return this.authService.signIn(signInDto.username, signInDto.password);
-    }
-  
-    @UseGuards(AuthGuard)
-    @Get('profile')
-    getProfile(@Request() req) {
-      return req.user;
-    }
+  Body,
+  Controller,
+  Post,
+  Request,
+} from '@nestjs/common';
+import { AuthService } from '../service/auth.service';
+import { LoginUserDto } from 'src/users/dto/loginUser.dto';
+import { CreateUserDto } from 'src/users/dto/createUsers.dto';
+
+@Controller('auth')
+export class AuthController {
+  constructor(private authService: AuthService) {}
+
+  @Post('sign-in')
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.authService.login(loginUserDto.email, loginUserDto.password);
   }
-  
+
+  @Post('sign-up')
+  registration(@Body() createUserDto: CreateUserDto) {
+    return this.authService.registration(createUserDto);
+  }
+}

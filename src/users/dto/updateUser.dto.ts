@@ -1,6 +1,6 @@
-export class CreateUserDto {
-    fullName?: string;
-    password?: string;
-    Dob?: Date;
-  }
-  
+export class UpdateUserDto {
+
+  fullName?: string;
+  password?: string;
+  Dob?: Date;
+}
