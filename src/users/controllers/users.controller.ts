@@ -22,6 +22,12 @@ export class UsersController {
   getUser(@Param('id', ParseIntPipe) id: number): Object {
     return this.usersService.getUser(id);
   }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  getAllUsers(): Object {
+    return this.usersService.findAll();
+  }
   // @Patch()
   // updateUser(@Body() updateUserDto: UpdateUserDto): Object {
   //   return this.usersService.updateUser(updateUserDto);
@@ -29,9 +35,5 @@ export class UsersController {
   // @Delete('/:id')
   // deleteUser(@Param('id') id: string): Object {
   //   return this.usersService.deleteUser;
-  // }
-  // @Get()
-  // getAllUsers(): Object {
-  //   return this.usersService.findAll;
   // }
 }

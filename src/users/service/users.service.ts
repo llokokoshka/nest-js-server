@@ -1,11 +1,8 @@
-import { Injectable, Res, Req, Param, ParseIntPipe,   HttpException,
-  HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../db/entity/users.entity';
-import { Response, Request } from 'express';
 import { UsersUtils } from '../utils/users.utils';
-import { handleError } from 'src/error.utils';
 
 // export type User = any;
 
@@ -18,39 +15,40 @@ export class UsersService {
   ) {}
 
   async getUser(id: number): Promise<Object> {
-      const user = await this.usersUtils.findUser(id);
-      if (!user) {
-        throw new HttpException(
-          'user not found',
-          HttpStatus.UNPROCESSABLE_ENTITY,
-        );
-      }
+    const user = await this.usersUtils.findUser(id);
+    if (!user) {
+      throw new HttpException(
+        'user not found',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
-      const visibleParamsOfUser = {
-        name: user.fullName,
-        email: user.email,
-        dateOfBirth: user.Dob,
-      };
-      return visibleParamsOfUser;
-      // res.json(visibleParamsOfUser);
+    const visibleParamsOfUser = {
+      name: user.fullName,
+      email: user.email,
+      dateOfBirth: user.Dob,
+    };
+    return visibleParamsOfUser;
   }
 
-  // async findAll(@Res() res: Response): Promise<User[]> {
-  //   const users = await this.usersRepository.find();
+  async findAll(): Promise<Object[]> {
+    const users = await this.usersRepository.find();
 
-  //   if (!users || users.length === 0) {
-  //     res.status(404).send('Users not found');
-  //     return;
-  //   }
+    if (!users || users.length === 0) {
+      throw new HttpException(
+        'users not found',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
 
-  //   const visibleParamsOfUsers = users.map((user) => ({
-  //     name: user.fullName,
-  //     email: user.email,
-  //     dateOfBirth: user.Dob,
-  //   }));
+    const visibleParamsOfUsers = users.map((user) => ({
+      name: user.fullName,
+      email: user.email,
+      dateOfBirth: user.Dob,
+    }));
 
-  //   res.json(visibleParamsOfUsers);
-  // }
+    return visibleParamsOfUsers;
+  }
 
   // async updateUser(req: Request, res: Response): Promise<void> {
   //   if (!req.body) {
