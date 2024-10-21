@@ -28,12 +28,14 @@ export class UsersController {
   getAllUsers(): Object {
     return this.usersService.findAll();
   }
+
+  @Delete('/:id')
+  deleteUser(@Param('id', ParseIntPipe) id: number): Object {
+    return this.usersService.deleteUser(id);
+  }
+
   // @Patch()
   // updateUser(@Body() updateUserDto: UpdateUserDto): Object {
   //   return this.usersService.updateUser(updateUserDto);
-  // }
-  // @Delete('/:id')
-  // deleteUser(@Param('id') id: string): Object {
-  //   return this.usersService.deleteUser;
   // }
 }

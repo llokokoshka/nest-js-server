@@ -50,6 +50,17 @@ export class UsersService {
     return visibleParamsOfUsers;
   }
 
+  async deleteUser(id:number): Promise<void> {
+      const user = await this.usersUtils.findUser(id);
+      if (!user) {
+        throw new HttpException(
+          'users not found',
+          HttpStatus.UNPROCESSABLE_ENTITY,
+        );
+      }
+      await this.usersRepository.remove(user);
+  }
+
   // async updateUser(req: Request, res: Response): Promise<void> {
   //   if (!req.body) {
   //     res.sendStatus(400);
@@ -67,19 +78,5 @@ export class UsersService {
   //   }
   // }
 
-  // async deleteUser(req: Request, res: Response): Promise<void> {
-  //   try {
-  //     const userId = Number(req.params.id);
-  //     const user = await this.usersUtils.findUser(userId);
-  //     if (!user) {
-  //       res.status(404).send('User not found');
-  //       return;
-  //     }
-
-  //     await this.usersRepository.remove(user);
-  //     res.status(204).send();
-  //   } catch (err) {
-  //     handleError(res, err, 'Error while delete user');
-  //   }
-  // }
+  
 }
