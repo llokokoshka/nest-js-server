@@ -1,10 +1,11 @@
-import { User } from '../entity/users.entity';
+import { User } from './entity/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
+import { UpdateUserDto } from './lib/updateUser.dto';
 
 @Injectable()
-export class UsersUtils {
+export class UserRepository {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -16,5 +17,18 @@ export class UsersUtils {
     } else {
       return await this.usersRepository.findOneBy({ email: searchValue });
     }
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.find();
+  }
+
+  async deleteUser(user: User): Promise<void> {
+    await this.usersRepository.remove(user);
+  }
+
+  async updateUser(params: UpdateUserDto, id:number): Promise<User> {
+    const user = await this.findUser(id);
+    return await this.usersRepository.save({ ...user, ...params });
   }
 }

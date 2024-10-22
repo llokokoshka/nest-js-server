@@ -16,4 +16,5 @@ export class User {
 
   @Column()
   Dob: Date;
+
 }

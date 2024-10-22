@@ -3,7 +3,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const config: DataSourceOptions = {
+export const dbConfig: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
@@ -17,7 +17,7 @@ const config: DataSourceOptions = {
 };
 
 const AppDataSource = new DataSource({
-  ...config,
+  ...dbConfig,
 });
 
 AppDataSource.initialize()
@@ -28,4 +28,4 @@ AppDataSource.initialize()
     console.error('Error during Data Source initialization', err);
   });
 
-  export default config;
+  export default AppDataSource;

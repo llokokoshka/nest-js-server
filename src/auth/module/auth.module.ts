@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
-import { UsersModule } from '../../users/module/users.module';
+import { UsersModule } from '../../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from '../controllers/auth.controller';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
+import { HttpExceptionFilter } from 'src/source/utils/http-exception.filter';
 import * as dotenv from 'dotenv';
-import { UsersUtils } from 'src/users/utils/users.utils';
+import { UserRepository } from 'src/users/users.repository';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ dotenv.config();
   ],
   providers: [
     AuthService,
-    UsersUtils,
+    UserRepository,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

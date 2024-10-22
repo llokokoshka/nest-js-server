@@ -1,20 +1,16 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../entity/users.entity';
-import { UsersUtils } from '../utils/users.utils';
-import { UpdateUserDto } from '../dto/updateUser.dto';
+import { User } from './entity/users.entity';
+import { UserRepository } from './users.repository';
+import { UpdateUserDto } from './lib/updateUser.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    private usersUtils: UsersUtils,
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: UserRepository,
   ) {}
 
   async getUser(id: number): Promise<Object> {
-    const user = await this.usersUtils.findUser(id);
+    const user = await this.userRepository.findUser(id);
     if (!user) {
       throw new HttpException(
         'user not found',
@@ -31,7 +27,7 @@ export class UsersService {
   }
 
   async findAll(): Promise<Object[]> {
-    const users = await this.usersRepository.find();
+    const users = await this.userRepository.findAll();
 
     if (!users || users.length === 0) {
       throw new HttpException(
@@ -50,20 +46,18 @@ export class UsersService {
   }
 
   async deleteUser(id: number): Promise<void> {
-    const user = await this.usersUtils.findUser(id);
+    const user = await this.userRepository.findUser(id);
     if (!user) {
       throw new HttpException(
         'users not found',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
-    await this.usersRepository.remove(user);
+    await this.userRepository.deleteUser(user);
   }
 
-  async updateUser(updateUser: UpdateUserDto, id: number): Promise<User> {
-    const params: UpdateUserDto = updateUser;
-    const user = await this.usersUtils.findUser(id);
-    const newUser = await this.usersRepository.save({ ...user, ...params });
+  async updateUser(updUser: UpdateUserDto, id: number): Promise<User> {
+    const newUser = await this.userRepository.updateUser(updUser, id);
     console.log('user are changed');
 
     return newUser;

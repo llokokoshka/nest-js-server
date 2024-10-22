@@ -7,19 +7,20 @@ import {
   Body,
   UseGuards,
   ParseIntPipe,
+  Req
 } from '@nestjs/common';
-import { UsersService } from '../service/users.service';
-import { UpdateUserDto } from '../dto/updateUser.dto';
-import { AuthGuard } from '../../auth/guards/auth.guard';
+import { UsersService } from './users.service';
+import { UpdateUserDto } from './lib/updateUser.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard)
-  @Get('/:id')
-  getUser(@Param('id', ParseIntPipe) id: number): Object {
-    return this.usersService.getUser(id);
+  @Get('me')
+  getUser(@Req() req): Object {
+    return req.user;
   }
 
   @UseGuards(AuthGuard)
@@ -28,12 +29,12 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   deleteUser(@Param('id', ParseIntPipe) id: number): Object {
     return this.usersService.deleteUser(id);
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,

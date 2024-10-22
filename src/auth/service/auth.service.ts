@@ -1,16 +1,16 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersUtils } from 'src/users/utils/users.utils';
+import { UserRepository } from 'src/users/users.repository';
 import { generatePassword, validPassword } from '../utils/auth.utils';
 import { User } from 'src/users/entity/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from 'src/users/dto/createUsers.dto';
+import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersUtils: UsersUtils,
+    private usersUtils: UserRepository,
     private jwtService: JwtService,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
