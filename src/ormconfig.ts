@@ -9,7 +9,7 @@ const config: ConnectionOptions = {
       database: process.env.DB_DATABASE,
       synchronize: false,
       logging: false,
-      entities: [`${__dirname}/db/entity/*.entity.{ts,js}`],
+      entities: [`${__dirname}/users/entity/*.entity.{ts,js}`],
       migrations: [`${__dirname}/db/migrations/*.{ts,js}`],
   };
   

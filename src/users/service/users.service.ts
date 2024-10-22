@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/users.entity';
 import { UsersUtils } from '../utils/users.utils';
+import { UpdateUserDto } from '../dto/updateUser.dto';
 
 // export type User = any;
 
@@ -50,33 +51,23 @@ export class UsersService {
     return visibleParamsOfUsers;
   }
 
-  async deleteUser(id:number): Promise<void> {
-      const user = await this.usersUtils.findUser(id);
-      if (!user) {
-        throw new HttpException(
-          'users not found',
-          HttpStatus.UNPROCESSABLE_ENTITY,
-        );
-      }
-      await this.usersRepository.remove(user);
+  async deleteUser(id: number): Promise<void> {
+    const user = await this.usersUtils.findUser(id);
+    if (!user) {
+      throw new HttpException(
+        'users not found',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    await this.usersRepository.remove(user);
   }
 
-  // async updateUser(req: Request, res: Response): Promise<void> {
-  //   if (!req.body) {
-  //     res.sendStatus(400);
-  //     return;
-  //   }
-  //   const params: Partial<User> = req.body;
-  //   try {
-  //     const user = req.user;
-  //     const newUser = await this.usersRepository.save({ ...user, ...params });
+  async updateUser(updateUser: UpdateUserDto, id: number): Promise<User> {
+    const params: UpdateUserDto = updateUser;
+    const user = await this.usersUtils.findUser(id);
+    const newUser = await this.usersRepository.save({ ...user, ...params });
+    console.log('user are changed');
 
-  //     console.log('user are changed');
-  //     res.json(newUser);
-  //   } catch (err) {
-  //     handleError(res, err, 'Error while update user');
-  //   }
-  // }
-
-  
+    return newUser;
+  }
 }
