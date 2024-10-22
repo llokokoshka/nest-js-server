@@ -5,8 +5,6 @@ import { User } from '../entity/users.entity';
 import { UsersUtils } from '../utils/users.utils';
 import { UpdateUserDto } from '../dto/updateUser.dto';
 
-// export type User = any;
-
 @Injectable()
 export class UsersService {
   constructor(

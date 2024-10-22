@@ -8,10 +8,11 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { UsersController } from './users/controllers/users.controller';
 import { ConfigModule } from '@nestjs/config';
-import ormconfig from './ormconfig';
+import dataSourse from './db/dataSource';
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRoot(dataSourse),
     AuthModule,
     UsersModule,
     ConfigModule.forRoot(),
