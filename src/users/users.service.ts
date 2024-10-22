@@ -2,7 +2,6 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './entity/users.entity';
 import { UserRepository } from './users.repository';
 import { UpdateUserDto } from './lib/updateUser.dto';
-import { CreateUserDto } from './lib/createUsers.dto';
 
 @Injectable()
 export class UsersService {
@@ -63,4 +62,6 @@ export class UsersService {
 
     return newUser;
   }
+
+
 }

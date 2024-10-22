@@ -7,6 +7,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from 'src/source/utils/http-exception.filter';
 import * as dotenv from 'dotenv';
 import { UserRepository } from 'src/users/users.repository';
+import { CreateTokensUtil } from './utils/token.utils';
 
 dotenv.config();
 
@@ -15,8 +16,6 @@ dotenv.config();
     UsersModule,
     JwtModule.register({
       global: true,
-      secret: process.env.TOKEN_SECRET,
-      signOptions: { expiresIn: '1h' },
     }),
   ],
   providers: [
@@ -26,6 +25,7 @@ dotenv.config();
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    CreateTokensUtil
   ],
   controllers: [AuthController],
   exports: [AuthService],

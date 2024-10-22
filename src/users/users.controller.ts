@@ -13,17 +13,16 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './lib/updateUser.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @UseGuards(AuthGuard)
+ 
   @Get('me')
   getUser(@Req() req): Object {
     return req.user;
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   getAllUsers(): Object {
     return this.usersService.findAll();
