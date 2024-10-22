@@ -3,24 +3,20 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/users/users.repository';
 import { generatePassword, validPassword } from './utils/auth.utils';
 import { User } from 'src/users/entity/users.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersUtils: UserRepository,
+    private userRepository: UserRepository,
     private jwtService: JwtService,
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
   ) {}
 
   async login(
     email: string,
     password: string,
   ): Promise<{ user: Object; token: string }> {
-    const user = await this.usersUtils.findUser(email);
+    const user = await this.userRepository.findUser(email);
     if (!user) {
       throw new HttpException(
         'user not found',
@@ -52,7 +48,7 @@ export class AuthService {
   ): Promise<{ user: User; token: string }> {
     const hashPass = generatePassword(user.password);
     user.password = hashPass.salt + '//' + hashPass.hash;
-    const addedUserInDb = await this.usersRepository.save(user);
+    const addedUserInDb = await this.userRepository.addUserInDb(user);
     if (!addedUserInDb) {
       throw new HttpException(
         'user not addited',
