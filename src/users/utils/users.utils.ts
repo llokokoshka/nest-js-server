@@ -1,4 +1,4 @@
-import { User } from '../../db/entity/users.entity';
+import { User } from '../entity/users.entity';
 import { generatePassword } from '../../auth/utils/auth.utils';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

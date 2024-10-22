@@ -9,7 +9,7 @@ import {
   generatePassword,
   validPassword,
 } from '../utils/auth.utils';
-import { User } from 'src/db/entity/users.entity';
+import { User } from 'src/users/entity/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/users/dto/createUsers.dto';

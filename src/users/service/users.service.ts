@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../../db/entity/users.entity';
+import { User } from '../entity/users.entity';
 import { UsersUtils } from '../utils/users.utils';
 
 // export type User = any;
