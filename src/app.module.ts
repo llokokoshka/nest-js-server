@@ -9,6 +9,7 @@ import { HttpExceptionFilter } from './source/utils/http-exception.filter';
 import { UsersController } from './users/users.controller';
 import { ConfigModule } from '@nestjs/config';
 import {dbConfig} from './db/dataSource';
+import { UserRepository } from './users/users.repository';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {dbConfig} from './db/dataSource';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    UserRepository
   ],
 })
 export class AppModule {}

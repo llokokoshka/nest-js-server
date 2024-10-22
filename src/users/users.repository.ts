@@ -12,10 +12,11 @@ export class UserRepository {
   ) {}
 
   async findUser(searchValue: number | string): Promise<User> {
+    let user: Partial<User> = {};
     if (typeof searchValue == 'number') {
-      return await this.usersRepository.findOneBy({ id: searchValue });
+     return user = await this.usersRepository.findOneBy({ id: searchValue });
     } else {
-      return await this.usersRepository.findOneBy({ email: searchValue });
+     return user = await this.usersRepository.findOneBy({ email: searchValue });
     }
   }
 

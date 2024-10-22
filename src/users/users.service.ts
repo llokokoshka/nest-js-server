@@ -2,27 +2,28 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './entity/users.entity';
 import { UserRepository } from './users.repository';
 import { UpdateUserDto } from './lib/updateUser.dto';
+import { CreateUserDto } from './lib/createUsers.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private userRepository: UserRepository,
-  ) {}
+  constructor(private userRepository: UserRepository) {}
 
   async getUser(id: number): Promise<Object> {
+    
     const user = await this.userRepository.findUser(id);
+    
     if (!user) {
       throw new HttpException(
         'user not found',
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
-
     const visibleParamsOfUser = {
       name: user.fullName,
       email: user.email,
       dateOfBirth: user.Dob,
     };
+
     return visibleParamsOfUser;
   }
 
