@@ -1,15 +1,4 @@
 import * as crypto from 'crypto';
-import * as jwt from 'jsonwebtoken';
-// import {}
-
-// export async function generateAccessToken(user: Object) {
-//   const payload = { sub: user.id, username: user.fullName };
-
-//   return {
-//     user: user,
-//     access_token: await this.jwtService.signAsync(payload),
-//   };
-// }
 
 export function generatePassword(password: string) {
   const salt = crypto.randomBytes(32).toString('hex');

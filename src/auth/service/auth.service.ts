@@ -1,14 +1,7 @@
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersUtils } from 'src/users/utils/users.utils';
-import {
-  generatePassword,
-  validPassword,
-} from '../utils/auth.utils';
+import { generatePassword, validPassword } from '../utils/auth.utils';
 import { User } from 'src/users/entity/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -46,8 +39,8 @@ export class AuthService {
     const visibleParamsOfUser = {
       name: user.fullName,
       email: user.email,
-      dateOfBirth: user.Dob
-    }
+      dateOfBirth: user.Dob,
+    };
     return {
       user: visibleParamsOfUser,
       token: await this.jwtService.signAsync(payload),
@@ -60,7 +53,7 @@ export class AuthService {
     const hashPass = generatePassword(user.password);
     user.password = hashPass.salt + '//' + hashPass.hash;
     const addedUserInDb = await this.usersRepository.save(user);
-    if (!addedUserInDb){
+    if (!addedUserInDb) {
       throw new HttpException(
         'user not addited',
         HttpStatus.INTERNAL_SERVER_ERROR,
