@@ -7,7 +7,7 @@ import {
   Body,
   UseGuards,
   ParseIntPipe,
-  Req
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './lib/updateUser.dto';
@@ -19,14 +19,14 @@ import { ReqGetUserDto } from './lib/reqGetUser.dto';
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
- 
+
   @Get('me')
   getUser(@Req() req: ReqGetUserDto): VisibleUserParamsDto {
     return req.user;
   }
 
   @Get()
-  getAllUsers():  Promise<VisibleUserParamsDto[]> {
+  getAllUsers(): Promise<VisibleUserParamsDto[]> {
     return this.usersService.findAll();
   }
 
@@ -37,9 +37,9 @@ export class UsersController {
 
   @Patch('me')
   updateUser(
-    @Req() req:ReqGetUserDto,
+    @Req() req: ReqGetUserDto,
     @Body() updateUserDto: UpdateUserDto,
-  ):  Promise<VisibleUserParamsDto> {
+  ): Promise<VisibleUserParamsDto> {
     return this.usersService.updateUser(updateUserDto, req.user.id);
   }
 }

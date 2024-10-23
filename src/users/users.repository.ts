@@ -15,7 +15,7 @@ export class UserRepository {
   async getUserById(searchValue: number): Promise<User> {
     return this.usersRepository.findOneBy({ id: searchValue });
   }
-  
+
   async getUserByEmail(searchValue: string): Promise<User> {
     return this.usersRepository.findOneBy({ email: searchValue });
   }

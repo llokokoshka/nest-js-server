@@ -6,7 +6,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/users/users.repository';
-import { generatePassword, validPassword, visibleParamsOfUser } from './utils/auth.utils';
+import {
+  generatePassword,
+  validPassword,
+  visibleParamsOfUser,
+} from './utils/auth.utils';
 import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 import { CreateTokensUtil } from './utils/token.utils';
 import { LoginDto } from './lib/login.dto';
@@ -20,10 +24,7 @@ export class AuthService {
     private createTokensUtil: CreateTokensUtil,
   ) {}
 
-  async login(
-    email: string,
-    password: string,
-  ): Promise<LoginDto> {
+  async login(email: string, password: string): Promise<LoginDto> {
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new HttpException(
@@ -51,9 +52,7 @@ export class AuthService {
     };
   }
 
-  async registration(
-    user: CreateUserDto,
-  ): Promise<RegistrationDto> {
+  async registration(user: CreateUserDto): Promise<RegistrationDto> {
     const hashPass = generatePassword(user.password);
     user.password = hashPass.salt + '//' + hashPass.hash;
     const addedUserInDb = await this.userRepository.createUser(user);

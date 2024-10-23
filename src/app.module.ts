@@ -8,7 +8,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './source/utils/http-exception.filter';
 import { UsersController } from './users/users.controller';
 import { ConfigModule } from '@nestjs/config';
-import {dbConfig} from './db/dataSource';
+import { dbConfig } from './db/dataSource';
 import { UserRepository } from './users/users.repository';
 
 @Module({
@@ -19,9 +19,6 @@ import { UserRepository } from './users/users.repository';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController, UsersController],
-  providers: [
-    AppService,
-    UserRepository
-  ],
+  providers: [AppService, UserRepository],
 })
 export class AppModule {}

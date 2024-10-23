@@ -18,11 +18,7 @@ dotenv.config();
       global: true,
     }),
   ],
-  providers: [
-    AuthService,
-    UserRepository,
-    CreateTokensUtil
-  ],
+  providers: [AuthService, UserRepository, CreateTokensUtil],
   controllers: [AuthController],
   exports: [AuthService],
 })

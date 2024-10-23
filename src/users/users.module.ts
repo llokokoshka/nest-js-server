@@ -9,10 +9,7 @@ import { HttpExceptionFilter } from 'src/source/utils/http-exception.filter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [
-    UsersService,
-    UserRepository,
-  ],
+  providers: [UsersService, UserRepository],
   exports: [UsersService, TypeOrmModule],
   controllers: [UsersController],
 })

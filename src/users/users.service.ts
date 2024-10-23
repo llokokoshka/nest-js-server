@@ -9,9 +9,8 @@ export class UsersService {
   constructor(private userRepository: UserRepository) {}
 
   async getUser(id: number): Promise<VisibleUserParamsDto> {
-    
     const user = await this.userRepository.getUserById(id);
-    
+
     if (!user) {
       throw new HttpException(
         'user not found',

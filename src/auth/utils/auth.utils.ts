@@ -19,7 +19,7 @@ export function validPassword(password: string, hash: string, salt: string) {
   return hash === checkHash;
 }
 
-export function visibleParamsOfUser(user:User){
+export function visibleParamsOfUser(user: User) {
   const visibleParamsOfUser = {
     fullName: user.fullName,
     email: user.email,

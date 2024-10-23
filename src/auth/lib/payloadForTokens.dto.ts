@@ -1,9 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class PayloadForTokensDto {
   @IsNotEmpty()
-  sub:number;
-  
+  sub: number;
+
   @IsNotEmpty()
-  username:string
+  username: string;
 }

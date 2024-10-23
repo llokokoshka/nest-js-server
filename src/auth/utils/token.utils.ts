@@ -7,9 +7,7 @@ import { TokensDto } from '../lib/tokens.dto';
 @Injectable()
 export class CreateTokensUtil {
   constructor(private jwtService: JwtService) {}
-  async createTokens(
-    payload:PayloadForTokensDto,
-  ): Promise<TokensDto> {
+  async createTokens(payload: PayloadForTokensDto): Promise<TokensDto> {
     const [access_token, refresh_token]: [string, string] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.TOKEN_SECRET,
