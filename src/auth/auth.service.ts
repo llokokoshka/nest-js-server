@@ -10,6 +10,7 @@ import { generatePassword, validPassword } from './utils/auth.utils';
 import { User } from 'src/users/entity/users.entity';
 import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 import { CreateTokensUtil } from './utils/token.utils';
+import { VisibleUserParamsDto } from 'src/users/lib/visibleUserParams.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,7 @@ export class AuthService {
   async login(
     email: string,
     password: string,
-  ): Promise<{ user: Object; access_token: string; refresh_token: string }> {
+  ): Promise<{ user: VisibleUserParamsDto; access_token: string; refresh_token: string }> {
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new HttpException(
@@ -40,9 +41,9 @@ export class AuthService {
 
     const payload = { sub: user.id, username: user.fullName };
     const visibleParamsOfUser = {
-      name: user.fullName,
+      fullName: user.fullName,
       email: user.email,
-      dateOfBirth: user.Dob,
+      Dob: user.Dob,
     };
     const { accessToken, refreshToken } =
       await this.createTokensUtil.createTokens(payload);

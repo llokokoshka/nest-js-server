@@ -25,7 +25,7 @@ export class UsersController {
   }
 
   @Get()
-  getAllUsers(): Object {
+  getAllUsers():  Promise<VisibleUserParamsDto[]> {
     return this.usersService.findAll();
   }
 
@@ -38,7 +38,7 @@ export class UsersController {
   updateUser(
     @Req() req,
     @Body() updateUserDto: UpdateUserDto,
-  ): Object {
+  ):  Promise<VisibleUserParamsDto> {
     return this.usersService.updateUser(updateUserDto, req.user.id);
   }
 }
