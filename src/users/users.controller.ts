@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './lib/updateUser.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
+import { ReqGetUserDto } from './lib/reqGetUser.dto';
 
 @UseGuards(AuthGuard)
 @Controller('user')
@@ -20,7 +21,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
  
   @Get('me')
-  getUser(@Req() req): VisibleUserParamsDto {
+  getUser(@Req() req: ReqGetUserDto): VisibleUserParamsDto {
     return req.user;
   }
 
@@ -36,7 +37,7 @@ export class UsersController {
 
   @Patch('me')
   updateUser(
-    @Req() req,
+    @Req() req:ReqGetUserDto,
     @Body() updateUserDto: UpdateUserDto,
   ):  Promise<VisibleUserParamsDto> {
     return this.usersService.updateUser(updateUserDto, req.user.id);
