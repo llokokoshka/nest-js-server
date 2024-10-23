@@ -1,4 +1,9 @@
-import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/users/users.repository';
 import { generatePassword, validPassword } from './utils/auth.utils';
@@ -17,7 +22,7 @@ export class AuthService {
   async login(
     email: string,
     password: string,
-  ): Promise<{ user: Object; access_token: string; refresh_token: string}> {
+  ): Promise<{ user: Object; access_token: string; refresh_token: string }> {
     const user = await this.userRepository.findUser(email);
     if (!user) {
       throw new HttpException(
@@ -39,7 +44,8 @@ export class AuthService {
       email: user.email,
       dateOfBirth: user.Dob,
     };
-    const { accessToken, refreshToken } = await this.createTokensUtil.createTokens(payload);
+    const { accessToken, refreshToken } =
+      await this.createTokensUtil.createTokens(payload);
     return {
       user: visibleParamsOfUser,
       access_token: accessToken,
@@ -61,7 +67,8 @@ export class AuthService {
     }
     const payload = { sub: addedUserInDb.id, username: addedUserInDb.fullName };
     console.log('user are addited');
-    const { accessToken, refreshToken } = await this.createTokensUtil.createTokens(payload);
+    const { accessToken, refreshToken } =
+      await this.createTokensUtil.createTokens(payload);
     return {
       user: addedUserInDb,
       access_token: accessToken,
@@ -69,7 +76,7 @@ export class AuthService {
     };
   }
 
-  async refreshToken(rt:string) {
+  async refreshToken(rt: string) {
     if (!rt) {
       throw new UnauthorizedException();
     }
@@ -79,18 +86,16 @@ export class AuthService {
       });
       const user = await this.userRepository.findUser(payload.sub);
       const data = { sub: user.id, username: user.fullName };
+      const { accessToken, refreshToken } =
+        await this.createTokensUtil.createTokens(data);
       console.log('token are refreshed');
-      const { accessToken, refreshToken } = await this.createTokensUtil.createTokens(data);
       return {
         user: user,
         access_token: accessToken,
         refresh_token: refreshToken,
       };
-      
     } catch {
       throw new UnauthorizedException();
     }
   }
-
-  
 }

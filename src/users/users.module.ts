@@ -12,10 +12,6 @@ import { HttpExceptionFilter } from 'src/source/utils/http-exception.filter';
   providers: [
     UsersService,
     UserRepository,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
   ],
   exports: [UsersService, TypeOrmModule],
   controllers: [UsersController],

@@ -21,10 +21,6 @@ import { UserRepository } from './users/users.repository';
   controllers: [AppController, UsersController],
   providers: [
     AppService,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
     UserRepository
   ],
 })

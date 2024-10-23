@@ -33,11 +33,11 @@ export class UsersController {
     return this.usersService.deleteUser(id);
   }
 
-  @Patch(':id')
+  @Patch('me')
   updateUser(
-    @Param('id', ParseIntPipe) id: number,
+    @Req() req,
     @Body() updateUserDto: UpdateUserDto,
   ): Object {
-    return this.usersService.updateUser(updateUserDto, id);
+    return this.usersService.updateUser(updateUserDto, req.user.id);
   }
 }

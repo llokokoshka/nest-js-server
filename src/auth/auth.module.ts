@@ -21,10 +21,6 @@ dotenv.config();
   providers: [
     AuthService,
     UserRepository,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
     CreateTokensUtil
   ],
   controllers: [AuthController],
