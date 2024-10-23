@@ -11,6 +11,7 @@ import { User } from 'src/users/entity/users.entity';
 import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 import { CreateTokensUtil } from './utils/token.utils';
 import { VisibleUserParamsDto } from 'src/users/lib/visibleUserParams.dto';
+import { LoginDto } from './lib/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,7 @@ export class AuthService {
   async login(
     email: string,
     password: string,
-  ): Promise<{ user: VisibleUserParamsDto; access_token: string; refresh_token: string }> {
+  ): Promise<LoginDto> {
     const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new HttpException(
@@ -45,12 +46,12 @@ export class AuthService {
       email: user.email,
       Dob: user.Dob,
     };
-    const { accessToken, refreshToken } =
+    const { access_token, refresh_token } =
       await this.createTokensUtil.createTokens(payload);
     return {
       user: visibleParamsOfUser,
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      access_token: access_token,
+      refresh_token: refresh_token,
     };
   }
 
@@ -68,12 +69,12 @@ export class AuthService {
     }
     const payload = { sub: addedUserInDb.id, username: addedUserInDb.fullName };
     console.log('user are addited');
-    const { accessToken, refreshToken } =
+    const { access_token, refresh_token } =
       await this.createTokensUtil.createTokens(payload);
     return {
       user: addedUserInDb,
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      access_token: access_token,
+      refresh_token: refresh_token,
     };
   }
 
@@ -87,13 +88,13 @@ export class AuthService {
       });
       const user = await this.userRepository.getUserById(payload.sub);
       const data = { sub: user.id, username: user.fullName };
-      const { accessToken, refreshToken } =
+      const { access_token, refresh_token } =
         await this.createTokensUtil.createTokens(data);
       console.log('token are refreshed');
       return {
         user: user,
-        access_token: accessToken,
-        refresh_token: refreshToken,
+        access_token: access_token,
+        refresh_token: refresh_token,
       };
     } catch {
       throw new UnauthorizedException();

@@ -1,6 +1,7 @@
 import { Global, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PayloadForTokensDto } from '../lib/payloadForTokens.dto';
+import { TokensDto } from '../lib/tokens.dto';
 
 @Global()
 @Injectable()
@@ -8,8 +9,8 @@ export class CreateTokensUtil {
   constructor(private jwtService: JwtService) {}
   async createTokens(
     payload:PayloadForTokensDto,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
-    const [accessToken, refreshToken]: [string, string] = await Promise.all([
+  ): Promise<TokensDto> {
+    const [access_token, refresh_token]: [string, string] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.TOKEN_SECRET,
         expiresIn: '10s',
@@ -20,8 +21,8 @@ export class CreateTokensUtil {
       }),
     ]);
     return {
-      accessToken,
-      refreshToken,
+      access_token,
+      refresh_token,
     };
   }
 }
