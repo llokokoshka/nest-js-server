@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { Request } from 'express';
 import { UserRepository } from 'src/users/users.repository';
+import { visibleParamsOfUser } from './utils/auth.utils';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -28,14 +29,8 @@ export class AuthGuard implements CanActivate {
         secret: process.env.TOKEN_SECRET,
       });
       const user = await this.userRepository.getUserById(payload.sub);
-
-      const visibleParamsOfUser = {
-        name: user.fullName,
-        email: user.email,
-        dateOfBirth: user.Dob,
-      };
-
-      request['user'] = visibleParamsOfUser;
+      const correctFormOfUser = visibleParamsOfUser(user);
+      request['user'] = correctFormOfUser;
     } catch {
       throw new UnauthorizedException();
     }

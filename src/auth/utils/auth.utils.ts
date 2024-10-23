@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+import { User } from 'src/users/entity/users.entity';
 
 export function generatePassword(password: string) {
   const salt = crypto.randomBytes(32).toString('hex');
@@ -16,4 +17,13 @@ export function validPassword(password: string, hash: string, salt: string) {
     .pbkdf2Sync(password, salt, 10000, 64, 'sha512')
     .toString('hex');
   return hash === checkHash;
+}
+
+export function visibleParamsOfUser(user:User){
+  const visibleParamsOfUser = {
+    fullName: user.fullName,
+    email: user.email,
+    Dob: user.Dob,
+  };
+  return visibleParamsOfUser;
 }

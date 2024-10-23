@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/users/users.repository';
-import { generatePassword, validPassword } from './utils/auth.utils';
+import { generatePassword, validPassword, visibleParamsOfUser } from './utils/auth.utils';
 import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 import { CreateTokensUtil } from './utils/token.utils';
 import { LoginDto } from './lib/login.dto';
@@ -40,15 +40,12 @@ export class AuthService {
     }
 
     const payload = { sub: user.id, username: user.fullName };
-    const visibleParamsOfUser = {
-      fullName: user.fullName,
-      email: user.email,
-      Dob: user.Dob,
-    };
+
+    const correctFormOfUser = visibleParamsOfUser(user);
     const { access_token, refresh_token } =
       await this.createTokensUtil.createTokens(payload);
     return {
-      user: visibleParamsOfUser,
+      user: correctFormOfUser,
       access_token: access_token,
       refresh_token: refresh_token,
     };
