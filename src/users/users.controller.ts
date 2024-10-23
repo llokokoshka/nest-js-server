@@ -5,17 +5,14 @@ import {
   Delete,
   Param,
   Body,
-  UseGuards,
   ParseIntPipe,
   Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './lib/updateUser.dto';
-import { AuthGuard } from '../auth/auth.guard';
 import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
 import { ReqGetUserDto } from './lib/reqGetUser.dto';
 
-@UseGuards(AuthGuard)
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
