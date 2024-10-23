@@ -1,12 +1,13 @@
 import { Global, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { PayloadForTokensDto } from '../lib/payloadForTokens.dto';
 
 @Global()
 @Injectable()
 export class CreateTokensUtil {
   constructor(private jwtService: JwtService) {}
   async createTokens(
-    payload:Object,
+    payload:PayloadForTokensDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const [accessToken, refreshToken]: [string, string] = await Promise.all([
       this.jwtService.signAsync(payload, {
