@@ -63,7 +63,6 @@ export class AuthService {
       );
     }
     const payload = { sub: addedUserInDb.id, username: addedUserInDb.fullName };
-    console.log('user are addited');
     const { access_token, refresh_token } =
       await this.createTokensUtil.createTokens(payload);
     return {
@@ -85,7 +84,6 @@ export class AuthService {
       const data = { sub: user.id, username: user.fullName };
       const { access_token, refresh_token } =
         await this.createTokensUtil.createTokens(data);
-      console.log('token are refreshed');
       return {
         user: user,
         access_token: access_token,

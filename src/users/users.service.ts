@@ -6,7 +6,8 @@ import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository,
+  ) {}
 
   async getUser(id: number): Promise<VisibleUserParamsDto> {
     const user = await this.userRepository.getUserById(id);
@@ -58,7 +59,6 @@ export class UsersService {
 
   async updateUser(updUser: UpdateUserDto, id: number): Promise<User> {
     const newUser = await this.userRepository.updateUser(updUser, id);
-    console.log('user are changed');
 
     return newUser;
   }
