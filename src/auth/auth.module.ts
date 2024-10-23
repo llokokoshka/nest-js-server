@@ -5,8 +5,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { UserRepository } from 'src/users/users.repository';
 import { CreateTokensUtil } from './utils/token.utils';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 @Module({
   imports: [

@@ -9,15 +9,15 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/users/users.repository';
 import { Request } from 'express';
 import { visibleParamsOfUser } from './utils/auth.utils';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private jwtService: JwtService,
-    private userRepository: UserRepository
+    private userRepository: UserRepository,
+    private configService: ConfigService
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.TOKEN_SECRET,
+        secret: this.configService.get<string>('token.accessToken'),
       });
       const user = await this.userRepository.getUserById(payload.sub);
       const correctFormOfUser = visibleParamsOfUser(user);

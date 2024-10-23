@@ -10,13 +10,17 @@ import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './db/dataSource';
 import { UserRepository } from './users/users.repository';
 import { AuthGuard } from './auth/auth.guard';
+import configuration from './config/configuration';
+
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
     AuthModule,
     UsersModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal: true,
+      load: [configuration],
+    }),
   ],
   controllers: [AppController, UsersController],
   providers: [AppService, UserRepository,
