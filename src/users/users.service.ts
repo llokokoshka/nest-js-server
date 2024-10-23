@@ -9,7 +9,7 @@ export class UsersService {
 
   async getUser(id: number): Promise<Object> {
     
-    const user = await this.userRepository.findUser(id);
+    const user = await this.userRepository.getUserById(id);
     
     if (!user) {
       throw new HttpException(
@@ -46,7 +46,7 @@ export class UsersService {
   }
 
   async deleteUser(id: number): Promise<void> {
-    const user = await this.userRepository.findUser(id);
+    const user = await this.userRepository.getUserById(id);
     if (!user) {
       throw new HttpException(
         'users not found',

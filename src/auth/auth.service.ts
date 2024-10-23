@@ -23,7 +23,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<{ user: Object; access_token: string; refresh_token: string }> {
-    const user = await this.userRepository.findUser(email);
+    const user = await this.userRepository.getUserByEmail(email);
     if (!user) {
       throw new HttpException(
         'user not found',
@@ -58,7 +58,7 @@ export class AuthService {
   ): Promise<{ user: User; access_token: string; refresh_token: string }> {
     const hashPass = generatePassword(user.password);
     user.password = hashPass.salt + '//' + hashPass.hash;
-    const addedUserInDb = await this.userRepository.addUserInDb(user);
+    const addedUserInDb = await this.userRepository.createUser(user);
     if (!addedUserInDb) {
       throw new HttpException(
         'user not addited',
@@ -84,7 +84,7 @@ export class AuthService {
       const payload = await this.jwtService.verifyAsync(rt, {
         secret: process.env.REFRESH_TOKEN_SECRET,
       });
-      const user = await this.userRepository.findUser(payload.sub);
+      const user = await this.userRepository.getUserById(payload.sub);
       const data = { sub: user.id, username: user.fullName };
       const { accessToken, refreshToken } =
         await this.createTokensUtil.createTokens(data);
