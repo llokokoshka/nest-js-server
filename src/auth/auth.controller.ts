@@ -8,19 +8,17 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('sign-in')
-  login(@Body() loginUserDto: LoginUserDto, @Req() req) {
-    return this.authService.login(loginUserDto.email, loginUserDto.password, req);
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.authService.login(loginUserDto.email, loginUserDto.password);
   }
 
   @Post('sign-up')
-  registration(@Body() createUserDto: CreateUserDto, @Req() req) {
-    return this.authService.registration(createUserDto, req);
+  registration(@Body() createUserDto: CreateUserDto) {
+    return this.authService.registration(createUserDto);
   }
 
   @Post('refresh-token')
-  refreshToken(@Body() rt:{refresh_token:string}){
-    const{ refresh_token } = rt;
-    console.log(refresh_token);
-    return this.authService.refreshToken(refresh_token);
+  refreshToken(@Body() rt) {
+    return this.authService.refreshToken(rt.refresh_token);
   }
 }

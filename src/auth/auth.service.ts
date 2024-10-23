@@ -17,7 +17,6 @@ export class AuthService {
   async login(
     email: string,
     password: string,
-    req,
   ): Promise<{ user: Object; access_token: string; refresh_token: string}> {
     const user = await this.userRepository.findUser(email);
     if (!user) {
@@ -41,7 +40,6 @@ export class AuthService {
       dateOfBirth: user.Dob,
     };
     const { accessToken, refreshToken } = await this.createTokensUtil.createTokens(payload);
-    req.body = {refresh_token: refreshToken};
     return {
       user: visibleParamsOfUser,
       access_token: accessToken,
@@ -51,7 +49,6 @@ export class AuthService {
 
   async registration(
     user: CreateUserDto,
-    req,
   ): Promise<{ user: User; access_token: string; refresh_token: string }> {
     const hashPass = generatePassword(user.password);
     user.password = hashPass.salt + '//' + hashPass.hash;
@@ -65,8 +62,6 @@ export class AuthService {
     const payload = { sub: addedUserInDb.id, username: addedUserInDb.fullName };
     console.log('user are addited');
     const { accessToken, refreshToken } = await this.createTokensUtil.createTokens(payload);
-    req.body = {refresh_token: refreshToken};
-    console.log(req.body);
     return {
       user: addedUserInDb,
       access_token: accessToken,

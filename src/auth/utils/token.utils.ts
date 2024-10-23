@@ -11,7 +11,7 @@ export class CreateTokensUtil {
     const [accessToken, refreshToken]: [string, string] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.TOKEN_SECRET,
-        expiresIn: '5s',
+        expiresIn: '10s',
       }),
       this.jwtService.signAsync(payload, {
         secret: process.env.REFRESH_TOKEN_SECRET,
