@@ -7,11 +7,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/users/users.repository';
 import { generatePassword, validPassword } from './utils/auth.utils';
-import { User } from 'src/users/entity/users.entity';
 import { CreateUserDto } from 'src/users/lib/createUsers.dto';
 import { CreateTokensUtil } from './utils/token.utils';
-import { VisibleUserParamsDto } from 'src/users/lib/visibleUserParams.dto';
 import { LoginDto } from './lib/login.dto';
+import { RegistrationDto } from './lib/registration.dto';
 
 @Injectable()
 export class AuthService {
@@ -57,7 +56,7 @@ export class AuthService {
 
   async registration(
     user: CreateUserDto,
-  ): Promise<{ user: User; access_token: string; refresh_token: string }> {
+  ): Promise<RegistrationDto> {
     const hashPass = generatePassword(user.password);
     user.password = hashPass.salt + '//' + hashPass.hash;
     const addedUserInDb = await this.userRepository.createUser(user);
