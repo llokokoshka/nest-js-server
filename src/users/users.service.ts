@@ -2,12 +2,13 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './entity/users.entity';
 import { UserRepository } from './users.repository';
 import { UpdateUserDto } from './lib/updateUser.dto';
+import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private userRepository: UserRepository) {}
 
-  async getUser(id: number): Promise<Object> {
+  async getUser(id: number): Promise<VisibleUserParamsDto> {
     
     const user = await this.userRepository.getUserById(id);
     
@@ -18,15 +19,15 @@ export class UsersService {
       );
     }
     const visibleParamsOfUser = {
-      name: user.fullName,
+      fullName: user.fullName,
       email: user.email,
-      dateOfBirth: user.Dob,
+      Dob: user.Dob,
     };
 
     return visibleParamsOfUser;
   }
 
-  async findAll(): Promise<Object[]> {
+  async findAll(): Promise<VisibleUserParamsDto[]> {
     const users = await this.userRepository.findAll();
 
     if (!users || users.length === 0) {
@@ -37,9 +38,9 @@ export class UsersService {
     }
 
     const visibleParamsOfUsers = users.map((user) => ({
-      name: user.fullName,
+      fullName: user.fullName,
       email: user.email,
-      dateOfBirth: user.Dob,
+      Dob: user.Dob,
     }));
 
     return visibleParamsOfUsers;
@@ -62,6 +63,4 @@ export class UsersService {
 
     return newUser;
   }
-
-
 }

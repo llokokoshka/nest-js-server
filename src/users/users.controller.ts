@@ -12,6 +12,7 @@ import {
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './lib/updateUser.dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
 
 @UseGuards(AuthGuard)
 @Controller('user')
@@ -19,7 +20,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
  
   @Get('me')
-  getUser(@Req() req): Object {
+  getUser(@Req() req): VisibleUserParamsDto {
     return req.user;
   }
 
@@ -29,8 +30,8 @@ export class UsersController {
   }
 
   @Delete(':id')
-  deleteUser(@Param('id', ParseIntPipe) id: number): Object {
-    return this.usersService.deleteUser(id);
+  deleteUser(@Param('id', ParseIntPipe) id: number): void {
+    this.usersService.deleteUser(id);
   }
 
   @Patch('me')
