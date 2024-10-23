@@ -19,7 +19,7 @@ export class AuthController {
 
   @Post('refresh-token')
   refreshToken(@Body() rt:{refresh_token:string}){
-    const{ refresh_token }= rt;
+    const{ refresh_token } = rt;
     console.log(refresh_token);
     return this.authService.refreshToken(refresh_token);
   }
