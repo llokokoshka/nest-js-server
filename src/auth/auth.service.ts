@@ -72,7 +72,7 @@ export class AuthService {
     };
   }
 
-  async refreshToken(rt: string) {
+  async refreshToken(rt: string): Promise<{access_token: string, refresh_token:string}>{
     if (!rt) {
       throw new UnauthorizedException();
     }
@@ -85,7 +85,6 @@ export class AuthService {
       const { access_token, refresh_token } =
         await this.createTokensUtil.createTokens(data);
       return {
-        user: user,
         access_token: access_token,
         refresh_token: refresh_token,
       };

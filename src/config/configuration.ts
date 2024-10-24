@@ -1,5 +1,7 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-export default () => ({
+const config = {
     port: parseInt(process.env.PORT, 10) || 3000,
     database: {
       host: process.env.DB_HOST,
@@ -12,5 +14,10 @@ export default () => ({
       accessToken: process.env.TOKEN_SECRET,
       refreshToken: process.env.REFRESH_TOKEN_SECRET,
     }
-  });
+  };
+
+  export const loadConfig = ()=>({
+    ...config
+  })
   
+  export default config;
