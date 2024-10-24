@@ -1,15 +1,15 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+
 import { User } from './entity/users.entity';
 import { UserRepository } from './users.repository';
 import { UpdateUserDto } from './lib/updateUser.dto';
-import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
+import { IVisibleUserParams } from './lib/visibleUserParams.interface';
 
 @Injectable()
 export class UsersService {
-  constructor(private userRepository: UserRepository,
-  ) {}
+  constructor(private userRepository: UserRepository) {}
 
-  async getUser(id: number): Promise<VisibleUserParamsDto> {
+  async getUser(id: number): Promise<IVisibleUserParams> {
     const user = await this.userRepository.getUserById(id);
 
     if (!user) {
@@ -27,7 +27,7 @@ export class UsersService {
     return visibleParamsOfUser;
   }
 
-  async findAll(): Promise<VisibleUserParamsDto[]> {
+  async findAll(): Promise<IVisibleUserParams[]> {
     const users = await this.userRepository.findAll();
 
     if (!users || users.length === 0) {

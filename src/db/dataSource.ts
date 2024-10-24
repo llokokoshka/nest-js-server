@@ -6,7 +6,7 @@ export const dbConfig: DataSourceOptions = {
   type: 'postgres',
   host: config.database.host,
   port: config.database.port,
-  username:config.database.username,
+  username: config.database.username,
   password: config.database.password,
   database: config.database.database,
   synchronize: false,
@@ -27,4 +27,4 @@ AppDataSource.initialize()
     console.error('Error during Data Source initialization', err);
   });
 
-  export default AppDataSource;
+export default AppDataSource;

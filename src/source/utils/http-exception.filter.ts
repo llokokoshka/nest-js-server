@@ -16,9 +16,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse() as HttpExceptionResponse;
-    const message = typeof exceptionResponse === 'string' ? exceptionResponse : exceptionResponse.message;
-
-    console.log(exception);
+    const message =
+      typeof exceptionResponse === 'string'
+        ? exceptionResponse
+        : exceptionResponse.message;
 
     response.status(status).json({
       message,

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './lib/updateUser.dto';
-import { VisibleUserParamsDto } from './lib/visibleUserParams.dto';
+import { IVisibleUserParams } from './lib/visibleUserParams.interface';
 import { ReqGetUserDto } from './lib/reqGetUser.dto';
 
 @Controller('user')
@@ -18,12 +18,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  getUser(@Req() req: ReqGetUserDto): VisibleUserParamsDto {
+  getUser(@Req() req: ReqGetUserDto): IVisibleUserParams {
     return req.user;
   }
 
   @Get()
-  getAllUsers(): Promise<VisibleUserParamsDto[]> {
+  getAllUsers(): Promise<IVisibleUserParams[]> {
     return this.usersService.findAll();
   }
 
@@ -36,7 +36,7 @@ export class UsersController {
   updateUser(
     @Req() req: ReqGetUserDto,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<VisibleUserParamsDto> {
+  ): Promise<IVisibleUserParams> {
     return this.usersService.updateUser(updateUserDto, req.user.id);
   }
 }
